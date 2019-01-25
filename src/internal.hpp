@@ -45,7 +45,6 @@
 
 #define SHUT_RDWR SD_BOTH
 typedef int socklen_t;
-#define snprintf _snprintf
 #define strdup _strdup
 #define stricmp _stricmp
 #define strdup _strdup
