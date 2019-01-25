@@ -53,7 +53,7 @@ void FanucAdapter::initialize(int aArgc, const char *aArgv[])
 
   printf("Arguments: %d\n", aArgc);
   if (aArgc > 1) {
-    strncpy(mDeviceIP, aArgv[0], MAX_HOST_LEN - 1);
+    strncpy_s(mDeviceIP, aArgv[0], MAX_HOST_LEN - 1);
     mDeviceIP[MAX_HOST_LEN - 1] = '\0';
     mDevicePort = atoi(aArgv[1]);
     
@@ -72,7 +72,7 @@ void FanucAdapter::initialize(int aArgc, const char *aArgv[])
   }
   
   FILE *fp = fopen(iniFile, "r");
-  printf("FP = %d, %x\n", errno, fp);
+  printf("FP = %d, %x\n", errno, (unsigned int)fp);
   if (fp != 0) fclose(fp);
 
   configMacrosAndPMC(iniFile);
@@ -397,7 +397,7 @@ void FanucAdapter::getMessages()
   if (ret == EW_OK && messages->datano != -1)
   {
     char buf[32];
-    sprintf(buf, "%04", messages->datano);
+    sprintf(buf, "%04d", messages->datano);
     mMessage.setValue(messages->data, buf);
   }
 }

@@ -38,7 +38,7 @@ FanucPath::FanucPath(Adapter *anAdapter, short aPathNumber)
 {
   char number[2];
   if (aPathNumber > 1)
-    sprintf(number, "%d", aPathNumber);
+    sprintf_s(number, "%d", aPathNumber);
   else
     number[0] = '\0';
 
@@ -458,7 +458,7 @@ bool FanucPath::getAxisData(unsigned short aFlibhndl)
     getHeader(aFlibhndl, dyn.prgnum);
 
   mProgramNum = dyn.prgnum;
-  sprintf(buf, "%d.%d", dyn.prgmnum, dyn.prgnum);
+  sprintf_s(buf, "%d.%d", dyn.prgmnum, dyn.prgnum);
   mProgramName.setValue(buf);
 
   // Update all the axes
@@ -605,7 +605,7 @@ void FanucPath::getCondition(unsigned short aFlibhndl, long aAlarm)
           if (cond == NULL)
             continue;
 
-          sprintf(num, "%d", alarm.alm_no);
+          sprintf_s(num, "%d", alarm.alm_no);
           cond->add(Condition::eFAULT, alarm.alm_msg, num);
         }
       }

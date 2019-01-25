@@ -105,7 +105,7 @@ void StringBuffer::timestamp()
 #ifdef WIN32
   SYSTEMTIME st;
   GetSystemTime(&st);
-  sprintf(mTimestamp, "%4d-%02d-%02dT%02d:%02d:%02d.%03dZ", st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
+  sprintf_s(mTimestamp, "%4d-%02d-%02dT%02d:%02d:%02d.%03dZ", st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
 #else
   struct timeval tv;
   struct timezone tz;
@@ -113,7 +113,7 @@ void StringBuffer::timestamp()
   gettimeofday(&tv, &tz);
   
   strftime(mTimestamp, 64, "%Y-%m-%dT%H:%M:%S", gmtime(&tv.tv_sec));
-  sprintf(mTimestamp + strlen(mTimestamp), ".%06dZ", tv.tv_usec);
+  sprintf_s(mTimestamp + strlen(mTimestamp), ".%06dZ", tv.tv_usec);
 #endif
 }
 

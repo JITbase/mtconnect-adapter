@@ -48,7 +48,7 @@
   #define _tcsicmp  stricmp
   #define _tcslen   strlen
   #define _tcsncpy  strncpy
-  #define _tcsnicmp strnicmp
+  #define _tcsnicmp _strnicmp
   #define _tcsrchr  strrchr
   #define _tcstol   strtol
   #define _tfgets   fgets
@@ -107,7 +107,7 @@ static TCHAR *striptrailing(TCHAR *str)
   return str;
 }
 
-static TCHAR *save_strncpy(TCHAR *dest, const TCHAR *source, size_t maxlen)
+static TCHAR *save_strncpy_s(TCHAR *dest, const TCHAR *source, size_t maxlen)
 {
   assert(maxlen>0);
   _tcsncpy(dest,source,maxlen);
@@ -141,7 +141,7 @@ static int getkeystring(INI_FILETYPE *fp, const TCHAR *Section, const TCHAR *Key
         assert(ep != NULL);
         assert(*ep == ']');
         *ep = '\0';
-        save_strncpy(Buffer, sp + 1, BufferSize);
+        save_strncpy_s(Buffer, sp + 1, BufferSize);
         return 1;
       } /* if */
       return 0; /* no more section found */
@@ -168,7 +168,7 @@ static int getkeystring(INI_FILETYPE *fp, const TCHAR *Section, const TCHAR *Key
       assert(*ep == '=' || *ep == ':');
       *ep = '\0';
       striptrailing(sp);
-      save_strncpy(Buffer, sp, BufferSize);
+      save_strncpy_s(Buffer, sp, BufferSize);
       return 1;
     } /* if */
     return 0;   /* no more key found (in this section) */
@@ -184,7 +184,7 @@ static int getkeystring(INI_FILETYPE *fp, const TCHAR *Section, const TCHAR *Key
     sp++;
     *--ep = '\0';
   } /* if */
-  save_strncpy(Buffer, sp, BufferSize);
+  save_strncpy_s(Buffer, sp, BufferSize);
   return 1;
 }
 
@@ -211,7 +211,7 @@ int ini_gets(const TCHAR *Section, const TCHAR *Key, const TCHAR *DefValue,
     ini_close(&fp);
   } /* if */
   if (!ok)
-    save_strncpy(Buffer, DefValue, BufferSize);
+    save_strncpy_s(Buffer, DefValue, BufferSize);
   return _tcslen(Buffer);
 }
 
@@ -286,7 +286,7 @@ static void ini_tempname(TCHAR *dest, const TCHAR *source, int maxlength)
 {
   TCHAR *p;
 
-  save_strncpy(dest, source, maxlength);
+  save_strncpy_s(dest, source, maxlength);
   p = _tcsrchr(dest, '\0');
   assert(p != NULL);
   *(p - 1) = '~';
@@ -298,7 +298,7 @@ static void writesection(TCHAR *LocalBuffer, const TCHAR *Section, INI_FILETYPE 
 
   if (Section != NULL && _tcslen(Section) > 0) {
     LocalBuffer[0] = '[';
-    save_strncpy(LocalBuffer + 1, Section, INI_BUFFERSIZE - 4);  /* -1 for '[', -1 for ']', -2 for '\r\n' */
+    save_strncpy_s(LocalBuffer + 1, Section, INI_BUFFERSIZE - 4);  /* -1 for '[', -1 for ']', -2 for '\r\n' */
     p = _tcsrchr(LocalBuffer, '\0');
     assert(p != NULL);
     *p++ = ']';
@@ -311,11 +311,11 @@ static void writekey(TCHAR *LocalBuffer, const TCHAR *Key, const TCHAR *Value, I
 {
   TCHAR *p;
 
-  save_strncpy(LocalBuffer, Key, INI_BUFFERSIZE - 3);  /* -1 for '=', -2 for '\r\n' */
+  save_strncpy_s(LocalBuffer, Key, INI_BUFFERSIZE - 3);  /* -1 for '=', -2 for '\r\n' */
   p = _tcsrchr(LocalBuffer, '\0');
   assert(p != NULL);
   *p++ = '=';
-  save_strncpy(p, Value, INI_BUFFERSIZE - (p - LocalBuffer) - 2); /* -2 for '\r\n' */
+  save_strncpy_s(p, Value, INI_BUFFERSIZE - (p - LocalBuffer) - 2); /* -2 for '\r\n' */
   p = _tcsrchr(LocalBuffer, '\0');
   assert(p != NULL);
   _tcscpy(p, INI_LINETERM); /* copy line terminator (typically "\n") */

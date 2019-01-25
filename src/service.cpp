@@ -8,7 +8,7 @@ MTConnectService::MTConnectService() :
 
 void MTConnectService::setName(const char *aName)
 {
-  strncpy(mName, aName, 78);
+  strncpy_s(mName, aName, 78);
   mName[79] = '\0';
 }
 
@@ -232,7 +232,7 @@ void MTConnectService::install(int argc, const char *argv[])
   // TODO: create registry entries for arguments to be passed in later to create the adapter multi_sz
   int d = 0;
   for (int i = 0; i < argc; i++) { 
-    strcpy(arguments + d, argv[i]);
+    strcpy_s(arguments + d, strlen(argv[i]), argv[i]);
     d += strlen(arguments + d) + 1;
   }
 
@@ -490,7 +490,7 @@ VOID SvcReportEvent(LPTSTR szFunction)
 
   if( NULL != hEventSource )
   {
-    sprintf(Buffer, "%-60s failed with %d", szFunction, GetLastError());
+    sprintf_s(Buffer, "%-60s failed with %d", szFunction, GetLastError());
 
     lpszStrings[0] = gService->name();
     lpszStrings[1] = Buffer;

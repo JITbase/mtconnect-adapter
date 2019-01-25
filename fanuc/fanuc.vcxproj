@@ -173,7 +173,7 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\src;..\Fwlib;..\Fwlib\e1;..\minIni_07;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>INI_ANSIONLY;DEBUG;WIN32</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
+      <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
