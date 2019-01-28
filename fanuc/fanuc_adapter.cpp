@@ -17,7 +17,7 @@
 #include "internal.hpp"
 #include "fanuc_adapter.hpp"
 #include "minIni.h"
-#include <excpt.h>
+//#include <excpt.h>
 
 FanucAdapter::FanucAdapter(int aPort)
   : Adapter(aPort), mAvail("avail"), mMessage("message"), mPartCount("part_count"),
@@ -148,7 +148,7 @@ void FanucAdapter::configMacrosAndPMC(const char *aIniFile)
 
   char dnc[8];
   ini_gets("focus", "dnc", "yes", dnc, 8, aIniFile);
-  mAllowDNC = _strnicmp(dnc, "no", 2) != 0;
+  mAllowDNC = strncasecmp(dnc, "no", 2) != 0;
 
   if (!mAllowDNC)
     printf("Disabling retrieval of program header\n");
@@ -291,7 +291,8 @@ void FanucAdapter::connect()
   {
     mConnected = false;
     unavailable();
-    Sleep(5000);
+    sleep(5000);
+    //Sleep(5000);
   }
 }
 

@@ -18,7 +18,7 @@ void Logger::error(const char *aFormat, ...)
 void Logger::warning(const char *aFormat, ...)
 {
   if (mLogLevel > eWARNING) return;
-  
+
   char buffer[LOGGER_BUFFER_SIZE];
   char ts[32];
   va_list args;
@@ -31,7 +31,7 @@ void Logger::warning(const char *aFormat, ...)
 void Logger::info(const char *aFormat, ...)
 {
   if (mLogLevel > eINFO) return;
-  
+
   char buffer[LOGGER_BUFFER_SIZE];
   char ts[32];
   va_list args;
@@ -44,7 +44,7 @@ void Logger::info(const char *aFormat, ...)
 void Logger::debug(const char *aFormat, ...)
 {
   if (mLogLevel > eDEBUG) return;
-  
+
   char buffer[LOGGER_BUFFER_SIZE];
   char ts[32];
   va_list args;
@@ -57,7 +57,7 @@ void Logger::debug(const char *aFormat, ...)
 
 const char *Logger::format(char *aBuffer, int aLen, const char *aFormat, va_list args)
 {
-  vsprintf_s(aBuffer, aLen, aFormat, args);
+  vsprintf(aBuffer, aFormat, args);
   aBuffer[aLen - 1] = '\0';
   return aBuffer;
 }
@@ -78,6 +78,6 @@ const char *Logger::timestamp(char *aBuffer)
   strftime(aBuffer, 64, "%Y-%m-%dT%H:%M:%S", gmtime(&tv.tv_sec));
   sprintf(aBuffer + strlen(aBuffer), ".%06dZ", tv.tv_usec);
 #endif
-  
+
   return aBuffer;
 }

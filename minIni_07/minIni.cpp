@@ -48,7 +48,7 @@
   #define _tcsicmp  stricmp
   #define _tcslen   strlen
   #define _tcsncpy  strncpy
-  #define _tcsnicmp _strnicmp
+  #define _tcsnicmp strncasecmp
   #define _tcsrchr  strrchr
   #define _tcstol   strtol
   #define _tfgets   fgets

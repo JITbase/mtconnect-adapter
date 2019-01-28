@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
 # Change if you want modify path or other values. #
 ###################################################
 
-set(PROJECT_NAME fanuc)
+set(PROJECT_NAME fanuc-shdr)
 # Output Variables
 set(OUTPUT_DEBUG Debug/bin)
 set(OUTPUT_RELEASE Release/bin)
@@ -15,8 +15,8 @@ set(PROJECT_CPP ./)
 set(PROJECT_HEADER ./)
 set(MININI_CPP ../minIni_07)
 set(MININI_HEADER ../minIni_07)
-set(FWLIB_CPP ../Fwlib)
 set(FWLIB_HEADER ../Fwlib/0i)
+#set(FWLIB_HEADER ../Linux)
 
 ############## CMake Project ################
 #        The main options of project        #
@@ -86,27 +86,23 @@ file(GLOB SOURCES_FILES
     ${PROJECT_HEADER}/*.h
     ${PROJECT_HEADER}/*.hpp
     ${MININI_CPP}/*.cpp
-    ${MININI_CPP}/*.c
     ${MININI_HEADER}/*.h
     ${MININI_HEADER}/*.hpp
-    ${FWLIB_CPP}/*.cpp
-    ${FWLIB_CPP}/*.c
     ${FWLIB_HEADER}/*.h
     ${FWLIB_HEADER}/*.hpp
 )
 
 #message(WARNING "SOURCES_FILES: ${SOURCES_FILES}")
 
-link_directories("/work/Fwlib/")
+link_directories("/work/Fwlib")
+#link_directories("/work/Linux/arm")
 
 # Add executable to build.
 add_executable(${PROJECT_NAME}
    ${SOURCES_FILES}
 )
 
-target_link_libraries(${PROJECT_NAME} Fwlib32.lib wsock32.lib )
+target_link_libraries(${PROJECT_NAME} Fwlib32 wsock32.lib )
+#target_link_libraries(${PROJECT_NAME} /work/Linux/arm/libfwlib32.so.1.0.5 pthread)
 
-# if(MSVC)
-#    target_link_libraries(${PROJECT_NAME} ..\Fwlib\Fwlib32.lib wsock32.lib )
-# endif(MSVC)
 
