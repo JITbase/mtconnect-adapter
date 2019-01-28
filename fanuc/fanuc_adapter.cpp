@@ -53,7 +53,7 @@ void FanucAdapter::initialize(int aArgc, const char *aArgv[])
 
   printf("Arguments: %d\n", aArgc);
   if (aArgc > 1) {
-    strncpy_s(mDeviceIP, aArgv[0], MAX_HOST_LEN - 1);
+    strncpy(mDeviceIP, aArgv[0], MAX_HOST_LEN - 1);
     mDeviceIP[MAX_HOST_LEN - 1] = '\0';
     mDevicePort = atoi(aArgv[1]);
     

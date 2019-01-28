@@ -300,16 +300,16 @@ bool Condition::ActiveCondition::setValue(ELevels aLevel, const char *aText, con
   {
     mLevel = aLevel;
     
-    strncpy_s(mNativeCode, aCode, EVENT_VALUE_LEN);
+    strncpy(mNativeCode, aCode, EVENT_VALUE_LEN);
     mNativeCode[EVENT_VALUE_LEN - 1] = '\0';
     
-    strncpy_s(mQualifier, aQualifier, EVENT_VALUE_LEN);
+    strncpy(mQualifier, aQualifier, EVENT_VALUE_LEN);
     mQualifier[EVENT_VALUE_LEN - 1] = '\0';
 
-    strncpy_s(mNativeSeverity, aSeverity, EVENT_VALUE_LEN);
+    strncpy(mNativeSeverity, aSeverity, EVENT_VALUE_LEN);
     mNativeSeverity[EVENT_VALUE_LEN - 1] = '\0';
 
-    strncpy_s(mText, aText, EVENT_VALUE_LEN);
+    strncpy(mText, aText, EVENT_VALUE_LEN);
     mText[EVENT_VALUE_LEN - 1] = '\0';
     
     mChanged = true;

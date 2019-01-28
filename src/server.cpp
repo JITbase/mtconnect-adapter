@@ -85,7 +85,7 @@ Server::Server(int aPort, int aHeartbeatFreq)
   }
 
   // Default to a 10 second heartbeat
-  sprintf_s(mPong, "* PONG %d\n", aHeartbeatFreq);
+  sprintf(mPong, "* PONG %d\n", aHeartbeatFreq);
 
   gLogger->info("Server started, waiting on port %d", aPort);
 }

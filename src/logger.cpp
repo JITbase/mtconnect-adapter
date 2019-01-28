@@ -57,7 +57,7 @@ void Logger::debug(const char *aFormat, ...)
 
 const char *Logger::format(char *aBuffer, int aLen, const char *aFormat, va_list args)
 {
-  vsprintf_s(aBuffer, aLen, aFormat, args);
+  vsprintf(aBuffer, aLen, aFormat, args);
   aBuffer[aLen - 1] = '\0';
   return aBuffer;
 }
@@ -67,7 +67,7 @@ const char *Logger::timestamp(char *aBuffer)
 #ifdef WIN32
   SYSTEMTIME st;
   GetSystemTime(&st);
-  sprintf_s(aBuffer, strlen(aBuffer), "%4d-%02d-%02dT%02d:%02d:%02d.%03dZ", st.wYear, st.wMonth, st.wDay, st.wHour,
+  sprintf(aBuffer, "%4d-%02d-%02dT%02d:%02d:%02d.%03dZ", st.wYear, st.wMonth, st.wDay, st.wHour,
           st.wMinute, st.wSecond, st.wMilliseconds);
 #else
   struct timeval tv;
@@ -76,7 +76,7 @@ const char *Logger::timestamp(char *aBuffer)
   gettimeofday(&tv, &tz);
 
   strftime(aBuffer, 64, "%Y-%m-%dT%H:%M:%S", gmtime(&tv.tv_sec));
-  sprintf_s(aBuffer + strlen(aBuffer), ".%06dZ", tv.tv_usec);
+  sprintf(aBuffer + strlen(aBuffer), ".%06dZ", tv.tv_usec);
 #endif
   
   return aBuffer;

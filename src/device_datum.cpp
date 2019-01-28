@@ -42,7 +42,7 @@ static const char *sUnavailable = "UNAVAILABLE";
  */
 DeviceDatum::DeviceDatum(const char *aName)
 {
-  strncpy_s(mName, aName, NAME_LEN);
+  strncpy(mName, aName, NAME_LEN);
   mName[NAME_LEN - 1] = '\0';
   strcpy(mOrigName, mName);
   mChanged = false;
@@ -73,14 +73,14 @@ bool DeviceDatum::prefixName(const char *aName)
 
 void DeviceDatum::setName(const char *aName)
 {
-  strncpy_s(mName, aName, NAME_LEN);
+  strncpy(mName, aName, NAME_LEN);
   mName[NAME_LEN - 1] = '\0';
   strcpy(mOrigName, mName);
 }
 
 void DeviceDatum::setNativeUnits(const char *aUnits)
 {
-  strncpy_s(mNativeUnits, aUnits, UNITS_LEN);
+  strncpy(mNativeUnits, aUnits, UNITS_LEN);
   mNativeUnits[UNITS_LEN - 1] = '\0';
 }
 
@@ -132,7 +132,7 @@ bool Event::setValue(const char *aValue)
   if (strncmp(aValue, mValue, EVENT_VALUE_LEN) != 0 || !mHasValue)
   {
     mChanged = true;
-    strncpy_s(mValue, aValue, EVENT_VALUE_LEN);
+    strncpy(mValue, aValue, EVENT_VALUE_LEN);
     mValue[EVENT_VALUE_LEN - 1] = '\0';
     mHasValue = true;
   }
@@ -564,10 +564,10 @@ char *Message::toString(char *aBuffer, int aMaxLen)
       strncmp(aText, mText, EVENT_VALUE_LEN) != 0)
     
   {
-    strncpy_s(mNativeCode, aCode, EVENT_VALUE_LEN);
+    strncpy(mNativeCode, aCode, EVENT_VALUE_LEN);
     mNativeCode[EVENT_VALUE_LEN - 1] = '\0';
     
-    strncpy_s(mText, aText, EVENT_VALUE_LEN);
+    strncpy(mText, aText, EVENT_VALUE_LEN);
     mText[EVENT_VALUE_LEN - 1] = '\0';
     
     mChanged = true;
