@@ -9,14 +9,17 @@ set(PROJECT_NAME fanuc)
 set(OUTPUT_DEBUG Debug/bin)
 set(OUTPUT_RELEASE Release/bin)
 # Folders files
-set(CPP_DIR_1 ../src)
-set(CPP_DIR_2 ./)
-set(CPP_DIR_3 ./)
-set(CPP_DIR_4 ../minIni_07)
-set(CPP_DIR_5 ./)
-set(CPP_DIR_6 ./)
-set(HEADER_DIR_1 ../src)
-set(HEADER_DIR_2 )
+set(SOURCES_FILES FanucAdapter.cpp)
+set(SRC_CPP ../src)
+set(SRC_HEADER ../src)
+set(PROJECT_CPP ./)
+set(PROJECT_HEADER ./)
+set(MININI_CPP ./minIni_07)
+set(MININI_HEADER ../minIni_07)
+set(FWLIB_CPP ../Fwlib)
+set(FWLIB_HEADER ../Fwlib)
+
+
 
 ############## CMake Project ################
 #        The main options of project        #
@@ -32,8 +35,9 @@ endif(NOT CMAKE_BUILD_TYPE)
 
 # Definition of Macros
 add_definitions(
-   -DINI_ANSIONLY 
-   -DDEBUG 
+   -DINI_ANSIONLY
+   -DDEBUG
+   -DWIN32
    -DUNICODE
    -D_UNICODE
 )
@@ -71,26 +75,39 @@ endif(NOT MSVC)
 #   --   Add files to project.   --   #
 #######################################
 
-file(GLOB SRC_FILES
-    ${CPP_DIR_1}/*.cpp
-    ${CPP_DIR_1}/*.c
-    ${CPP_DIR_2}/*.cpp
-    ${CPP_DIR_2}/*.c
-    ${CPP_DIR_3}/*.cpp
-    ${CPP_DIR_3}/*.c
-    ${CPP_DIR_4}/*.cpp
-    ${CPP_DIR_4}/*.c
-    ${CPP_DIR_5}/*.cpp
-    ${CPP_DIR_5}/*.c
-    ${CPP_DIR_6}/*.cpp
-    ${CPP_DIR_6}/*.c
-    ${HEADER_DIR_1}/*.h
-    ${HEADER_DIR_2}/*.h
+include_directories(SYSTEM ${SRC_HEADER})
+include_directories(SYSTEM ${PROJECT_HEADER})
+include_directories(SYSTEM ${MININI_HEADER})
+include_directories(SYSTEM ${FWLIB_HEADER})
+
+file(GLOB SOURCES_FILES
+    ${SRC_CPP}/*.cpp
+    ${SRC_CPP}/*.c
+    ${SRC_HEADER}/*.h
+    ${SRC_HEADER}/*.hpp
+    ${PROJECT_CPP}/*.cpp
+    ${PROJECT_CPP}/*.c
+    ${PROJECT_HEADER}/*.h
+    ${PROJECT_HEADER}/*.hpp
+    ${MININI_CPP}/*.cpp
+    ${MININI_CPP}/*.c
+    ${MININI_HEADER}/*.h
+    ${MININI_HEADER}/*.hpp
+    ${FWLIB_CPP}/*.cpp
+    ${FWLIB_CPP}/*.c
+    ${FWLIB_HEADER}/*.h
+    ${FWLIB_HEADER}/*.hpp
+)
+
+# Ignore unused files
+list(REMOVE_ITEM SOURCES_FILES
+   ${SRC_CPP}/configuration.cpp
+   ${SRC_HEADER}/configuration.hpp
 )
 
 # Add executable to build.
-add_executable(${PROJECT_NAME} 
-   ${SRC_FILES}
+add_executable(${PROJECT_NAME}
+   ${SOURCES_FILES}
 )
 
 if(MSVC)
