@@ -8,15 +8,6 @@ set(PROJECT_NAME fanuc-shdr)
 # Output Variables
 set(OUTPUT_DEBUG Debug/bin)
 set(OUTPUT_RELEASE Release/bin)
-# Folders files
-set(SRC_CPP ../src)
-set(SRC_HEADER ../src)
-set(PROJECT_CPP ./)
-set(PROJECT_HEADER ./)
-set(MININI_CPP ../minIni_07)
-set(MININI_HEADER ../minIni_07)
-set(FWLIB_HEADER ../Fwlib/0i)
-#set(FWLIB_HEADER ../Linux)
 
 ############## CMake Project ################
 #        The main options of project        #
@@ -24,19 +15,37 @@ set(FWLIB_HEADER ../Fwlib/0i)
 
 project(${PROJECT_NAME} CXX)
 
+# Folders files
+set(SRC_CPP ../src)
+set(SRC_HEADER ../src)
+set(PROJECT_CPP ./)
+set(PROJECT_HEADER ./)
+set(MININI_CPP ../minIni_07)
+set(MININI_HEADER ../minIni_07)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+   set(FWLIB_HEADER ../Fwlib/0i)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+   set(FWLIB_HEADER ../Linux)
+endif()
+
 # Define Release by default.
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
   message(STATUS "Build type not specified: Use Release by default.")
 endif(NOT CMAKE_BUILD_TYPE)
 
+
 # Definition of Macros
 add_definitions(
    -DINI_ANSIONLY
    -DDEBUG
-   -DWIN32
    -DSTRSAFE_NO_DEPRECATE
 )
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+   add_definitions(-DWIN32)
+endif()
 
 ############## Artefacts Output #################
 # Defines outputs , depending Debug or Release. #
@@ -92,17 +101,22 @@ file(GLOB SOURCES_FILES
     ${FWLIB_HEADER}/*.hpp
 )
 
-#message(WARNING "SOURCES_FILES: ${SOURCES_FILES}")
-
-link_directories("/work/Fwlib")
-#link_directories("/work/Linux/arm")
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+   link_directories("/work/Fwlib")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND CMAKE_SYSTEM_PROCESSOR STREQUAL "arm")
+   link_directories("/work/Linux/arm")
+endif()
 
 # Add executable to build.
 add_executable(${PROJECT_NAME}
    ${SOURCES_FILES}
 )
 
-target_link_libraries(${PROJECT_NAME} Fwlib32 wsock32.lib )
-#target_link_libraries(${PROJECT_NAME} /work/Linux/arm/libfwlib32.so.1.0.5 pthread)
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+   target_link_libraries(${PROJECT_NAME} Fwlib32 wsock32.lib)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND CMAKE_SYSTEM_PROCESSOR STREQUAL "arm")
+   target_link_libraries(${PROJECT_NAME} /work/Linux/arm/libfwlib32.so.1.0.5 pthread)
+endif()
+
 
 
