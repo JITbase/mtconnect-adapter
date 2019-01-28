@@ -9,9 +9,13 @@ Release
 build
 *.sln
 *.vcproj
-CMakeFiles
+Makefile
+CMakeFiles/*
+CMakeCache.txt
+*.cmake
 *.dir
 **/.vs/*
 
 Fwlib/*
 Linux/*
+fanuc-*

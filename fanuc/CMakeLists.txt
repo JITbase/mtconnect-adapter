@@ -101,6 +101,9 @@ file(GLOB SOURCES_FILES
     ${FWLIB_HEADER}/*.hpp
 )
 
+# Remove uneeded files
+list(FILTER SOURCES_FILES EXCLUDE REGEX ${SRC_CPP}/configuration.*)
+
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
    link_directories("/work/Fwlib")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND CMAKE_SYSTEM_PROCESSOR STREQUAL "arm")
