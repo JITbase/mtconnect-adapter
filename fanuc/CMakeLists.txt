@@ -9,17 +9,14 @@ set(PROJECT_NAME fanuc)
 set(OUTPUT_DEBUG Debug/bin)
 set(OUTPUT_RELEASE Release/bin)
 # Folders files
-set(SOURCES_FILES FanucAdapter.cpp)
 set(SRC_CPP ../src)
 set(SRC_HEADER ../src)
 set(PROJECT_CPP ./)
 set(PROJECT_HEADER ./)
-set(MININI_CPP ./minIni_07)
+set(MININI_CPP ../minIni_07)
 set(MININI_HEADER ../minIni_07)
 set(FWLIB_CPP ../Fwlib)
-set(FWLIB_HEADER ../Fwlib)
-
-
+set(FWLIB_HEADER ../Fwlib/0i)
 
 ############## CMake Project ################
 #        The main options of project        #
@@ -38,8 +35,7 @@ add_definitions(
    -DINI_ANSIONLY
    -DDEBUG
    -DWIN32
-   -DUNICODE
-   -D_UNICODE
+   -DSTRSAFE_NO_DEPRECATE
 )
 
 ############## Artefacts Output #################
@@ -99,17 +95,18 @@ file(GLOB SOURCES_FILES
     ${FWLIB_HEADER}/*.hpp
 )
 
-# Ignore unused files
-list(REMOVE_ITEM SOURCES_FILES
-   ${SRC_CPP}/configuration.cpp
-   ${SRC_HEADER}/configuration.hpp
-)
+#message(WARNING "SOURCES_FILES: ${SOURCES_FILES}")
+
+link_directories("/work/Fwlib/")
 
 # Add executable to build.
 add_executable(${PROJECT_NAME}
    ${SOURCES_FILES}
 )
 
-if(MSVC)
-   target_link_libraries(${PROJECT_NAME} ..\Fwlib\Fwlib32.lib wsock32.lib )
-endif(MSVC)
+target_link_libraries(${PROJECT_NAME} Fwlib32.lib wsock32.lib )
+
+# if(MSVC)
+#    target_link_libraries(${PROJECT_NAME} ..\Fwlib\Fwlib32.lib wsock32.lib )
+# endif(MSVC)
+

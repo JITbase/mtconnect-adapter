@@ -358,7 +358,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">INI_ANSIONLY;DEBUG;FS30D;WIN32</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\src\logger.cpp" />
-    <ClCompile Include="..\minIni_07\minIni.c" />
+    <ClCompile Include="..\minIni_07\minIni.cpp" />
     <ClCompile Include="..\src\server.cpp" />
     <ClCompile Include="..\src\service.cpp" />
     <ClCompile Include="..\src\string_array.cpp" />

@@ -57,7 +57,7 @@ void Logger::debug(const char *aFormat, ...)
 
 const char *Logger::format(char *aBuffer, int aLen, const char *aFormat, va_list args)
 {
-  vsprintf(aBuffer, aLen, aFormat, args);
+  vsprintf_s(aBuffer, aLen, aFormat, args);
   aBuffer[aLen - 1] = '\0';
   return aBuffer;
 }
