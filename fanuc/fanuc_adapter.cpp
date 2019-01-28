@@ -128,8 +128,8 @@ void FanucAdapter::disconnect()
   if (mConnected)
   {
     printf("Machine has disconnected. Releasing Resources\n");
-    cnc_freelibhndl(mFlibhndl);
     mConnected = false;
+    clean();
     unavailable();
   }
 }
@@ -272,11 +272,21 @@ void FanucAdapter::configure()
 
 void FanucAdapter::connect()
 {
+  short ret = EW_OK;
+
   if (mConnected)
     return;
 
   printf("Connecting to Machine at %s and port %d\n", mDeviceIP, mDevicePort);
-  short ret = ::cnc_allclibhndl3(mDeviceIP, mDevicePort, 10, &mFlibhndl);
+
+#ifdef __linux__
+  if ((ret = cnc_startupprocess(/* log_level = */0, "fanuc-focas.log")) != EW_OK)
+  {
+    printf("Unable to start process (%d)", ret);
+  }
+#endif
+
+  ret = ::cnc_allclibhndl3(mDeviceIP, mDevicePort, 10, &mFlibhndl);
   printf("Result: %d\n", ret);
   if (ret == EW_OK)
   {
@@ -292,7 +302,6 @@ void FanucAdapter::connect()
     mConnected = false;
     unavailable();
     sleep(5000);
-    //Sleep(5000);
   }
 }
 
@@ -300,11 +309,26 @@ void FanucAdapter::reconnect()
 {
   if (mConnected)
   {
-    cnc_freelibhndl(mFlibhndl);
     mConnected = false;
-
+    clean();
     connect();
   }
+}
+
+void FanucAdapter::clean()
+{
+  if(!mFlibhndl)
+    return;
+
+  cnc_freelibhndl(mFlibhndl);
+
+#ifdef __linux__
+  short ret = EW_OK;
+  if ((ret = cnc_exitprocess()) != EW_OK)
+  {
+    printf("Unable to exit process (%d)", ret);
+  }
+#endif
 }
 
 void FanucAdapter::getMacros()

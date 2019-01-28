@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
- 
+
 #ifndef FANUC_ADAPTER_HPP
 #define FANUC_ADAPTER_HPP
 
@@ -29,7 +29,7 @@
 #define MAX_PMC 32
 const int MAX_HOST_LEN = 64;
 
-class MacroSample : public Sample 
+class MacroSample : public Sample
 {
 protected:
   int mNumber;
@@ -40,7 +40,7 @@ public:
   int getNumber() { return mNumber; }
 };
 
-class MacroPathPosition : public PathPosition 
+class MacroPathPosition : public PathPosition
 {
 protected:
   int mX;
@@ -54,11 +54,11 @@ public:
   int getY() { return mY; }
   int getZ() { return mZ; }
 };
-  
-/* 
+
+/*
  * Provides a connection to the data available from the FANUC Focus library.
  */
-class FanucAdapter : public Adapter, public MTConnectService 
+class FanucAdapter : public Adapter, public MTConnectService
 {
 protected:
   /* Define all the data values here */
@@ -67,10 +67,10 @@ protected:
 
 
   /* Conditions */
-  
+
   /* Events */
   Message mMessage;
-  
+
   Availability mAvail;
   IntEvent mPartCount;
 
@@ -81,7 +81,7 @@ protected:
   int       mMacroMax;
   int       mMacroSampleCount;
   int       mMacroPathCount;
-    
+
   /* Macro variables */
   IntEvent *mPMCVariable[MAX_PMC];
   int       mPMCAddress[MAX_PMC];
@@ -97,11 +97,12 @@ protected:
   void connect();
   void configure();
   void configMacrosAndPMC(const char *aIniFile);
-  
+
   void reconnect();
+  void clean();
   void disconnect();
   void getMessages();
-  
+
   void getPathData();
 
   void getMacros();
@@ -114,12 +115,12 @@ protected:
 public:
   FanucAdapter(int aServerPort);
   ~FanucAdapter();
-  
+
   // For Service
   virtual void initialize(int aArgc, const char *aArgv[]);
   virtual void start();
   virtual void stop();
-  
+
   virtual void gatherDeviceData();
 };
 
